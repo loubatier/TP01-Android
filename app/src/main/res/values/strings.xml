@@ -3,4 +3,10 @@
     <string name="toastButton">Toast</string>
     <string name="incrementButton">Increment</string>
     <string name="counter">0</string>
+    <string name="toCounterButton">Counter</string>
+    <string name="toCalculatorButton">Calculator</string>
+    <string name="toMailButton">Mail</string>
+    <string name="addButton">Add</string>
+    <string name="textFieldFirst">First</string>
+    <string name="textFieldSecond">Second</string>
 </resources>

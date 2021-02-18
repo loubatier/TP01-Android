@@ -3,45 +3,65 @@ package com.batierlou.tp01;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
+
+import com.batierlou.tp01.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity {
 
-    private Button toastButton;
-    private Button incButton;
-    private TextView counterTextView;
-    private Integer counter;
+    private ActivityMainBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+
+        binding = ActivityMainBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+
         initViews();
     }
 
     private void initViews() {
-        toastButton = findViewById(R.id.toastButton);
-        incButton = findViewById(R.id.incButton);
-        counterTextView = findViewById(R.id.counterTextView);
-        counter = 0;
 
-        incButton.setOnClickListener(new View.OnClickListener() {
-            @SuppressLint("SetTextI18n")
+        binding.toCounter.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                counter += 1;
-                counterTextView.setText(counter.toString());
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, CounterActivity.class));
             }
         });
 
-        toastButton.setOnClickListener(new View.OnClickListener() {
+        binding.toCalculator.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                Toast.makeText(MainActivity.this, counter.toString(), Toast.LENGTH_SHORT).show();
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, CalculatorActivity.class));
+            }
+        });
+
+        binding.toMail.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("IntentReset")
+            @Override
+            public void onClick(View v) {
+                String[] TO = {"papy@gmail.com", "mamy@gmail.com"};
+                String[] CC = {""};
+                Intent emailIntent = new Intent(Intent.ACTION_SEND);
+
+                emailIntent.setData(Uri.parse("mailto:"));
+                emailIntent.setType("text/plain");
+                emailIntent.putExtra(Intent.EXTRA_EMAIL, TO);
+                emailIntent.putExtra(Intent.EXTRA_CC, CC);
+                emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Sujet");
+                emailIntent.putExtra(Intent.EXTRA_TEXT, "Le contenu du mail");
+
+                try {
+                    startActivity(Intent.createChooser(emailIntent, "Send mail..."));
+                    finish();
+                } catch (android.content.ActivityNotFoundException ex) {
+                    Toast.makeText(MainActivity.this, "There is no email client installed.", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
